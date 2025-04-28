@@ -18,11 +18,14 @@ if(!isset($_SESSION['user'])){
     <title>Alexandria</title>
     <!-- font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Eagle+Lake&family=Poppins:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
-
-<!-- link css -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Eagle+Lake&family=Poppins:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <!-- link icon search -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=search" />
+    <!-- link css -->
     <link rel="stylesheet" href="css/style.css?v=<?php echo time(); ?>"> 
+    <!-- icon web -->
+    <link rel="icon" sizes="32x32" href="asset/img/Alexandria.png" type="img/png">
 </head>
 <body>
     <?php
@@ -72,8 +75,11 @@ if(!isset($_SESSION['user'])){
 
     <div class="top_nav">
         <a href="#"><span>Alexandria</span></a>
-        <div class="option">
+        <div class="search">
+            <span class="material-symbols-outlined">search</span>
             <input type="search" name="search" placeholder="Search book">
+        </div>
+        <div class="option">
             <a href="#" id="profileToggle"><?php echo $_SESSION['user']['name']?></a>
             <a href="#" id="profileToggleImg"><img src="<?php echo $profile;?>" alt=""></a>
         </div>
@@ -97,13 +103,6 @@ if(!isset($_SESSION['user'])){
             <p><?php echo $_SESSION['user']['name']; ?></p>
             <a href="logout.php"><img src="asset/icon/logout.svg" alt="logout"><span>Log out</span></a>
         </div>
-    </div>
-
-    <div class="sort">
-        <a href="">All</a>
-        <a href="">History</a>
-        <a href="">Novel</a>
-        <a href="">Education</a>
     </div>
 
      <div class="left_nav">
