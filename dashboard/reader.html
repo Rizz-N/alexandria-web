@@ -62,7 +62,8 @@
     import '../library/foliate-js/view.js';
 
     // Handle back button.
-    document.getElementById('back-button').addEventListener('click', () => history.back());
+    // Bug fixes
+    document.getElementById('back-button').addEventListener('click', () => {window.location.href ='books.html'});
 
     // Get the book metadata from server.
     const params = new URLSearchParams(location.search);
