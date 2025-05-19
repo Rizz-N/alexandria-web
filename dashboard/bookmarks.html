@@ -56,11 +56,7 @@
     <div style="display:flex;align-items:center;gap:32px;">
       <div style="position:relative;">
         <img src="../assets/icon/search.svg" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);width:20px;height:20px;pointer-events:none;">
-<<<<<<< HEAD
         <input type="text" placeholder="Search books…" style="border:1px solid #ccc;border-radius:20px;background:transparent;outline:none;padding:10px 12px 10px 40px;font-size:1rem;min-width:220px;height:16px;"  oninput="searchBooks()">
-=======
-        <input type="text" placeholder="Search books…" style="border:1px solid #ccc;border-radius:20px;background:transparent;outline:none;padding:10px 12px 10px 40px;font-size:1rem;min-width:220px;height:16px;" oninput="searchBooks()">
->>>>>>> 1c77c80baff9d4bcfde43c76204f259f1e556a91
       </div>
       <img id="settings-icon" src="../assets/icon/settings.svg" alt="Settings" style="width:36px;height:36px;cursor:pointer;" onclick="document.getElementById('settings-dialog').showModal()">
     </div>
@@ -149,51 +145,16 @@
   </dialog>
 
   <script>
-    // Search Algorythm
-   let allBooks = [];
-
-  function renderBooks(books) {
-    const container = document.getElementById('book-list');
-    container.innerHTML = '';
-    books.forEach(book => {
-      const progress = book.location_total
-        ? Math.min(1, book.location_current / book.location_total) * 100 : 0;
-      container.innerHTML += `
-        <div class="card"
-          title="${book.title}\nBy ${book.writer}"
-          onclick="location.href='reader.html?id=${encodeURIComponent(book.id)}'">
-          <img src="${book.cover_url}" class="card-img">
-          ${book.is_bookmarked ? `<img src="../assets/icon/star_filled.svg" class="card-star-icon">` : ``}
-          <div class="progress-bar-container">
-            <div class="progress-bar-fill" style="width:${progress}%"></div>
-          </div>
-          <div class="card-content">
-            <div class="card-title">${book.title}</div>
-            <div class="card-writer">${book.writer}</div>
-          </div>
-        </div>`;
-    });
-  }
-
-  function searchBooks() {
-    const query = document.querySelector('input[type="text"]').value.toLowerCase().trim();
-    if (query === '') {
-      renderBooks(allBooks); // tampilkan semua jika kosong
-    } else {
-      const filtered = allBooks.filter(book =>
-        book.title.toLowerCase().includes(query) ||
-        book.writer.toLowerCase().includes(query)
-      );
-      renderBooks(filtered);
-    }
-  }
-
-  // Ambil semua buku saat halaman dimuat
-  fetch('bookmarks.php')
-    .then(res => res.json())
-    .then(books => {
-      allBooks = books;
-      renderBooks(allBooks);
+     // Navigation.
+    document.querySelectorAll('.nav-item').forEach(el => {
+      el.addEventListener('click', () => {
+        document.querySelectorAll('.nav-item').forEach(e => e.classList.remove('selected'));
+        el.classList.add('selected');
+        const tab = el.textContent.trim();
+        if (tab === 'Books') window.location.href = 'books.html';
+        else if (tab === 'Bookmarks') window.location.href = 'bookmarks.html';
+        else if (tab === 'History') window.location.href = 'history.html';
+      });
     });
     
     // Close settings dialog when anywhere outside.
@@ -202,7 +163,6 @@
         document.getElementById('settings-dialog').close();
       };
     }
-
     // Search algorithm.
     let allBooks = [];
 
@@ -312,7 +272,6 @@
         icon.src = '../assets/icon/arrow_drop_up.svg';
       }
     });
-<<<<<<< HEAD
   });
   document.addEventListener('click', e => {
     if (!e.target.closest('.filter-btn') && !e.target.closest('.filter-menu')) {
@@ -321,8 +280,6 @@
       document.querySelectorAll('.filter-btn img').forEach(i => i.src = '../assets/icon/arrow_drop_down.svg');
     }
   });
-=======
->>>>>>> 1c77c80baff9d4bcfde43c76204f259f1e556a91
   </script>
 </body>
 </html>

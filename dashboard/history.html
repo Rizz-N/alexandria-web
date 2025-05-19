@@ -60,13 +60,9 @@
     <div style="display:flex;align-items:center;gap:32px;">
       <div style="position:relative;">
         <img src="../assets/icon/search.svg" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);width:20px;height:20px;pointer-events:none;">
-<<<<<<< HEAD
-        <input id="global-search-input" onkeydown="handleGlobalSearch(event)" type="text" placeholder="Search books…" style="border:1px solid #ccc;border-radius:20px;background:transparent;outline:none;padding:10px 12px 10px 40px;font-size:1rem;min-width:220px;height:16px;">
-=======
         <input id="global-search-input" type="text" placeholder="Search books…"
           style="border:1px solid #ccc;border-radius:20px;background:transparent;outline:none;padding:10px 12px 10px 40px;font-size:1rem;min-width:220px;height:16px;"
           oninput="searchBooks()" onkeydown="handleGlobalSearch(event)">
->>>>>>> 1c77c80baff9d4bcfde43c76204f259f1e556a91
       </div>
       <img id="settings-icon" src="../assets/icon/settings.svg" alt="Settings" style="width:36px;height:36px;cursor:pointer;" onclick="document.getElementById('settings-dialog').showModal()">
     </div>
@@ -183,26 +179,6 @@
         else if (tab === 'History') window.location.href = 'history.html';
       });
     });
-<<<<<<< HEAD
-
-    // search Algorythm
-    let fullHistory = {};
-
-    async function loadHistory() {
-  const res = await fetch('history.php');
-  fullHistory = await res.json();
-  renderHistory(fullHistory);
-}
-=======
-    
-    // Close settings dialog when anywhere outside.
-    window.onclick = e => {
-      if (e.target === document.getElementById('settings-dialog')) {
-        document.getElementById('settings-dialog').close();
-      };
-    }
-
-    // Search algorithm.
     let fullHistory = {};
 
     async function loadHistory() {
@@ -210,12 +186,6 @@
       fullHistory = await res.json();
       renderHistory(fullHistory);
     }
-
-    function renderHistory(historyData) {
-      const container = document.getElementById('history-list');
-      container.innerHTML = '';
->>>>>>> 1c77c80baff9d4bcfde43c76204f259f1e556a91
-
 function renderHistory(data) {
   const container = document.getElementById('history-list');
   container.innerHTML = '';
@@ -225,54 +195,6 @@ function renderHistory(data) {
     const options = { day: 'numeric', month: 'long', year: 'numeric' };
     const formattedDate = dateObj.toLocaleDateString(undefined, options);
 
-<<<<<<< HEAD
-    const header = document.createElement('div');
-    header.textContent = formattedDate;
-    header.style = "font-size:1rem;font-weight:bold;margin:24px 0 12px 24px;color:#555;";
-    container.appendChild(header);
-
-    data[date].forEach(book => {
-      const row = document.createElement('div');
-      row.className = 'book-row';
-      row.innerHTML = `
-        <img src="${book.cover_url}" class="book-img">
-        <div class="book-info">
-          <div class="book-title">${book.title}</div>
-          <div class="book-writer">${book.writer}</div>
-        </div>
-        <button class="remove-btn" title="Remove from history">×</button>
-      `;
-      row.addEventListener('click', () => {
-        window.location.href = `reader.html?id=${encodeURIComponent(book.id)}`;
-      });
-      row.querySelector('.remove-btn').addEventListener('click', async (e) => {
-        e.stopPropagation();
-        await removeFromHistory(book.id, e.target);
-      });
-      container.appendChild(row);
-    });
-  }
-}
-
-function searchHistory() {
-  const query = document.querySelector('.search-bar input').value.toLowerCase().trim();
-  if (query === '') {
-    renderHistory(fullHistory);
-    return;
-  }
-
-  const filtered = {};
-  for (const date in fullHistory) {
-    const books = fullHistory[date].filter(book =>
-      book.title.toLowerCase().includes(query) ||
-      book.writer.toLowerCase().includes(query)
-    );
-    if (books.length > 0) filtered[date] = books;
-  }
-
-  renderHistory(filtered);
-}
-=======
         historyData[date].forEach(book => {
           const row = document.createElement('div');
           row.className = 'book-row';
@@ -316,7 +238,6 @@ function searchHistory() {
       renderHistory(filtered);
     }
 
->>>>>>> 1c77c80baff9d4bcfde43c76204f259f1e556a91
     async function removeFromHistory(bookId, btn) {
       await fetch('history.php?remove=1', {
         method: 'POST',
@@ -350,16 +271,6 @@ function searchHistory() {
     loadHistory();
     // search form to books.html
     function handleGlobalSearch(event) {
-<<<<<<< HEAD
-  if (event.key === 'Enter') {
-    const keyword = event.target.value.trim();
-    if (keyword) {
-      window.location.href = `books.html?search=${encodeURIComponent(keyword)}`;
-    }
-  }
-}
-
-=======
       if (event.key === 'Enter') {
         const keyword = event.target.value.trim();
         if (keyword) {
@@ -367,7 +278,6 @@ function searchHistory() {
         }
       }
     }
->>>>>>> 1c77c80baff9d4bcfde43c76204f259f1e556a91
   </script>
 </body>
 </html>

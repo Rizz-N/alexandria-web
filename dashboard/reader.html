@@ -64,17 +64,12 @@
     const params = new URLSearchParams(window.location.search);
 
     // Handle back button.
-<<<<<<< HEAD
-    // Fixed bug
-    document.getElementById('back-button').addEventListener('click', () => {window.location.href ='books.html'});
-=======
     const from = params.get('from');
     document.getElementById('back-button').addEventListener('click', () => {
       if (from === 'bookmarks') window.location.href = 'bookmarks.html';
       else if (from === 'history') window.location.href = 'history.html';
       else window.location.href = 'books.html';
     });
->>>>>>> 1c77c80baff9d4bcfde43c76204f259f1e556a91
 
     // Get the book metadata from server.
     const bookId = params.get('id');
