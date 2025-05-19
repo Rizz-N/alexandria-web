@@ -18,6 +18,7 @@ if ($stmt->num_rows > 0) {
   if (password_verify($password, $hashed)) {
     // Store user ID as current session.
     $_SESSION['user_id'] = $user_id;
+    $_SESSION['username'] = $username;
     echo "<script>window.location.href='../dashboard/books.html';</script>";
   } else {
     // Wrong password.

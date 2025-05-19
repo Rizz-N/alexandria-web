@@ -56,7 +56,7 @@
     <div style="display:flex;align-items:center;gap:32px;">
       <div style="position:relative;">
         <img src="../assets/icon/search.svg" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);width:20px;height:20px;pointer-events:none;">
-        <input type="text" placeholder="Search books…" style="border:1px solid #ccc;border-radius:20px;background:transparent;outline:none;padding:10px 12px 10px 40px;font-size:1rem;min-width:220px;height:16px;"  oninput="searchBooks()">
+        <input type="text" placeholder="Search books…" style="border:1px solid #ccc;border-radius:20px;background:transparent;outline:none;padding:10px 12px 10px 40px;font-size:1rem;min-width:220px;height:16px;" oninput="searchBooks()">
       </div>
       <img id="settings-icon" src="../assets/icon/settings.svg" alt="Settings" style="width:36px;height:36px;cursor:pointer;" onclick="document.getElementById('settings-dialog').showModal()">
     </div>
@@ -134,18 +134,20 @@
       <div style="display:flex;align-items:flex-start;gap:12px;">
         <img src="../assets/icon/account.svg" style="width:54px;height:54px;margin-top:4px;">
         <div style="display:flex;flex-direction:column;gap:8px;">
-          <span style="font-size:1rem;">username</span>
-          <button id="logout-btn" onclick="signOut()"
-            style="padding:8px 16px;border:none;border-radius:8px;cursor:pointer;background:#333;color:#fff;text-align:center;">
-            Logout
-          </button>
+          <span style="font-size:1rem;" id="username">username</span>
+          <form action="logout.php" method="post">
+            <button id="logout-btn"
+              style="padding:8px 16px;border:none;border-radius:8px;cursor:pointer;background:#333;color:#fff;text-align:center;">
+              Logout
+            </button>
+          </form>
         </div>
       </div>
     </div>
   </dialog>
 
   <script>
-     // Navigation.
+    // Navigation.
     document.querySelectorAll('.nav-item').forEach(el => {
       el.addEventListener('click', () => {
         document.querySelectorAll('.nav-item').forEach(e => e.classList.remove('selected'));
@@ -163,6 +165,7 @@
         document.getElementById('settings-dialog').close();
       };
     }
+
     // Search algorithm.
     let allBooks = [];
 
@@ -244,41 +247,43 @@
         });
       });
 
-  // Navigasi dan filter dropdown tetap kamu bisa lanjutkan di bawah ini
-  document.querySelectorAll('.nav-item').forEach(el => {
-    el.addEventListener('click', () => {
-      document.querySelectorAll('.nav-item').forEach(e => e.classList.remove('selected'));
-      el.classList.add('selected');
-      const tab = el.textContent.trim();
-      if (tab === 'Books') window.location.href = 'books.html';
-      else if (tab === 'Bookmarks') window.location.href = 'bookmarks.html';
-      else if (tab === 'History') window.location.href = 'history.html';
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', e => {
+        e.stopPropagation();
+        const menu = btn.nextElementSibling;
+        const icon = btn.querySelector('img');
+        const isOpen = menu.style.display === 'block';
+        // Close all menus first.
+        document.querySelectorAll('.filter-menu').forEach(m => m.style.display = 'none');
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.filter-btn img').forEach(i => i.src = '../assets/icon/arrow_drop_down.svg');
+        if (!isOpen) {
+          menu.style.display = 'block';
+          btn.classList.add('active');
+          icon.src = '../assets/icon/arrow_drop_up.svg';
+        }
+      });
     });
-  });
-
-  document.querySelectorAll('.filter-btn').forEach(btn => {
-    btn.addEventListener('click', e => {
-      e.stopPropagation();
-      const menu = btn.nextElementSibling;
-      const icon = btn.querySelector('img');
-      const isOpen = menu.style.display === 'block';
-      // Menutup semua menu
-      document.querySelectorAll('.filter-menu').forEach(m => m.style.display = 'none');
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      document.querySelectorAll('.filter-btn img').forEach(i => i.src = '../assets/icon/arrow_drop_down.svg');
-      if (!isOpen) {
-        menu.style.display = 'block';
-        btn.classList.add('active');
-        icon.src = '../assets/icon/arrow_drop_up.svg';
+    document.addEventListener('click', e => {
+      if (!e.target.closest('.filter-btn') && !e.target.closest('.filter-menu')) {
+        document.querySelectorAll('.filter-menu').forEach(m => m.style.display = 'none');
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.filter-btn img').forEach(i => i.src = '../assets/icon/arrow_drop_down.svg');
       }
     });
-  });
-  document.addEventListener('click', e => {
-    if (!e.target.closest('.filter-btn') && !e.target.closest('.filter-menu')) {
-      document.querySelectorAll('.filter-menu').forEach(m => m.style.display = 'none');
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      document.querySelectorAll('.filter-btn img').forEach(i => i.src = '../assets/icon/arrow_drop_down.svg');
+
+  fetch('../user-info.php')
+  .then(res => res.json())
+  .then(data => {
+    if (data.username) {
+      document.getElementById("username").textContent = data.username;
+    } else {
+      document.getElementById("username").textContent = "Guest";
     }
+  })
+  .catch(err => {
+    document.getElementById("username").textContent = "Error";
+    console.error("Gagal mengambil username:", err);
   });
   </script>
 </body>

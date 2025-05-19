@@ -158,11 +158,13 @@
       <div style="display:flex;align-items:flex-start;gap:12px;">
         <img src="../assets/icon/account.svg" style="width:54px;height:54px;margin-top:4px;">
         <div style="display:flex;flex-direction:column;gap:8px;">
-          <span style="font-size:1rem;">username</span>
-          <button id="logout-btn" onclick="signOut()"
+          <span style="font-size:1rem;" id="username">username</span>
+          <form action="logout.php" method="post">
+          <button id="logout-btn"
             style="padding:8px 16px;border:none;border-radius:8px;cursor:pointer;background:#333;color:#fff;text-align:center;">
             Logout
           </button>
+          </form>
         </div>
       </div>
     </div>
@@ -179,6 +181,15 @@
         else if (tab === 'History') window.location.href = 'history.html';
       });
     });
+    
+    // Close settings dialog when anywhere outside.
+    window.onclick = e => {
+      if (e.target === document.getElementById('settings-dialog')) {
+        document.getElementById('settings-dialog').close();
+      };
+    }
+
+    // Search algorithm.
     let fullHistory = {};
 
     async function loadHistory() {
@@ -186,14 +197,20 @@
       fullHistory = await res.json();
       renderHistory(fullHistory);
     }
-function renderHistory(data) {
-  const container = document.getElementById('history-list');
-  container.innerHTML = '';
 
-  for (const date in data) {
-    const dateObj = new Date(date);
-    const options = { day: 'numeric', month: 'long', year: 'numeric' };
-    const formattedDate = dateObj.toLocaleDateString(undefined, options);
+    function renderHistory(historyData) {
+      const container = document.getElementById('history-list');
+      container.innerHTML = '';
+
+      for (const date in historyData) {
+        const dateObj = new Date(date);
+        const options = { day: 'numeric', month: 'long', year: 'numeric' };
+        const formattedDate = dateObj.toLocaleDateString(undefined, options);
+
+        const header = document.createElement('div');
+        header.textContent = formattedDate;
+        header.style = "font-size:1rem;font-weight:bold;margin:24px 0 12px 24px;color:#555;";
+        container.appendChild(header);
 
         historyData[date].forEach(book => {
           const row = document.createElement('div');
@@ -278,6 +295,20 @@ function renderHistory(data) {
         }
       }
     }
+
+    fetch('../user-info.php')
+  .then(res => res.json())
+  .then(data => {
+    if (data.username) {
+      document.getElementById("username").textContent = data.username;
+    } else {
+      document.getElementById("username").textContent = "Guest";
+    }
+  })
+  .catch(err => {
+    document.getElementById("username").textContent = "Error";
+    console.error("Gagal mengambil username:", err);
+  });
   </script>
 </body>
 </html>
