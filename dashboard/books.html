@@ -7,9 +7,13 @@
   <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
   <style>
     body {margin:0;padding:0;font-family:'Roboto Slab',serif;background:#f1efe3;display:flex;flex-direction:column;height:100vh;}
+    body.dark {background: #0e101c; color: white;}
     .nav-item {cursor:pointer;color:#333;padding:8px 12px;position:relative;}
+    body.dark .nav-item{color: white;}
     .nav-item:hover, .nav-item.selected {border-bottom:2px solid #333;}
+    body.dark .nav-item:hover,body.dark .nav-item.selected {border-bottom:2px solid white;}
     .filter-btn {display:flex;align-items:center;gap:8px;cursor:pointer;color:#333;border:none;border-bottom:2px solid transparent;background:transparent;font-family:'Roboto Slab',serif;font-size:1rem;position:relative;padding:6px 0;}
+    body.dark .filter-btn{color: white;}
     .filter-btn.active {border-bottom:2px solid #333;}
     .filter-menu {display:none;position:absolute;top:100%;left:0;background:#f1efe3;box-shadow:0 2px 6px rgba(0,0,0,0.1);border-radius:6px;margin-top:6px;overflow:hidden;z-index:10;}
     .filter-menu div {padding:8px 12px;cursor:pointer;white-space:nowrap;}
@@ -17,20 +21,34 @@
     .filter-menu div.active {background:#d4c7b0;font-weight:bold;}
     .card {position:relative;display:inline-block;width:160px;height:fit-content;margin:8px;padding:4px;border-radius:12px;overflow:hidden;cursor:pointer;background:transparent;}
     .card:hover {background:#e0ddd0;opacity:0.9;}
+    body.dark .card:hover{background: #585858;}
     .card-img {width:160px;height:250px;border-radius:8px;object-fit:cover;display:block;}
     .card-star-icon {position:absolute;top:8px;right:8px;width:28px;height:28px;pointer-events:none;filter:drop-shadow(0 0 2px rgba(0,0,0,0.7));}
     .progress-bar-container {height:4px;margin:4px 4px 0;background:#cdcdcd;}
     .progress-bar-fill {height:100%;background:#333;}
     .card-content {padding:8px;}
-    .card-title {font-weight:bold;font-size:0.75rem;text-align:center;line-height:1.2;display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;text-overflow:ellipsis;white-space:normal;}
-    .card-writer {font-size:0.7rem;text-align:center;color:#555;margin-top:4px;display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;text-overflow:ellipsis;white-space:normal;}
-
+    .card-title {font-weight:bold;font-size: var(--user-font-size, 16px); text-align:center;display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;text-overflow:ellipsis;white-space:normal;line-height: var(--user-line-spacing, 1.5);}
+    .card-writer {font-size: var(--user-font-size, 16px); text-align:center;color:#555;margin-top:4px;display:-webkit-box;-webkit-line-clamp:2;line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;text-overflow:ellipsis;white-space:normal;}
+    body.dark .card-writer{color: #cdcdcd;}
     ::-webkit-scrollbar {width:8px;background-color:rgba(0,0,0,0);}
     ::-webkit-scrollbar:hover {background-color:rgba(0, 0, 0, 0.09);}
     ::-webkit-scrollbar-thumb:vertical {background:rgba(0,0,0,0.5);}
     ::-webkit-scrollbar-thumb:vertical:active {background:rgba(0,0,0,0.61);}
 
+    input[type="text"]{border:4px solid #ccc;border-radius:20px;background: white;outline:none;padding:10px 12px 10px 40px;font-size:1rem;min-width:220px;height:16px;color: black;}
+    body.dark input[type="text"] {color: white;border-color: #666;background: black;border:4px solid white;}
+
     /* Settings dialog. */
+    .dialog{position:relative;width:460px;max-width:90vw;padding:0;border:none;border-radius:12px;background:#f1efe3;box-shadow:0 2px 10px rgba(0,0,0,0.2);font-family:'Roboto Slab',serif;overflow:hidden;max-height:80vh;}
+    body.dark .dialog{background: #303030; color: white;box-shadow:0 2px 10px rgba(255, 255, 255, 0.5);}
+    .dialog-title{font-size:1.75rem;margin:0 0 24px 0;color:#333;}
+    body.dark .dialog-title{color: white;}
+    .line-spacing{display:flex;justify-content:space-between;font-size:0.75rem;color:#555;width:calc(100% - 32px);margin-left:32px;}
+    body.dark .line-spacing{color: white;}
+    .font-size{display:flex;justify-content:space-between;font-size:0.75rem;color:#555;width:calc(100% - 32px);margin-left:32px;}
+    body.dark .font-size{color: white;}
+    .close{position:absolute;top:12px;right:12px;background:none;border:none;font-size:1.5rem;cursor:pointer;padding:0;outline:none; color: #333;}
+    body.dark .close{color: white;}
     #settings-scroll-area::-webkit-scrollbar {display:none;}
     .switch {position:relative;display:inline-block;width:40px;height:20px;}
     .switch input {opacity:0;width:0;height:0;}
@@ -38,16 +56,18 @@
     .switch .slider:before {content:"";position:absolute;height:16px;width:16px;left:2px;bottom:2px;border-radius:50%;background:#999;transition:.2s;}
     .switch input:checked + .slider {background:#d4c7b0;}
     .switch input:checked + .slider:before {transform:translateX(20px);background:#666;}
-    #logout-btn:hover {background:#555 !important;}
+    #logout-btn:hover {background:#4E71FF !important;}
     /* Slider. */
     input[type="range"]::-webkit-slider-thumb {-webkit-appearance:none;height:16px;width:16px;border-radius:50%;background:#666;cursor:pointer;}
     input[type="range"]::-moz-range-thumb {height:16px;width:16px;border-radius:50%;background:#d4c7b0;cursor:pointer;}
+    .site-title{margin:0;font-size:1.8rem;color:#333;}
+    body.dark .site-title{color: white;}
   </style>
 </head>
 <body>
 
   <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 20px;">
-    <h1 style="margin:0;font-size:1.8rem;color:#333;">Alexandria</h1>
+    <h1 class="site-title">Alexandria</h1>
     <div style="flex:1;display:flex;justify-content:center;gap:24px;">
       <div class="nav-item selected">Books</div>
       <div class="nav-item">Bookmarks</div>
@@ -55,8 +75,8 @@
     </div>
     <div style="display:flex;align-items:center;gap:32px;">
       <div style="position:relative;">
-        <img src="../assets/icon/search.svg" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);width:20px;height:20px;pointer-events:none;">
-        <input type="text" placeholder="Search books…" style="border:1px solid #ccc;border-radius:20px;background:transparent;outline:none;padding:10px 12px 10px 40px;font-size:1rem;min-width:220px;height:16px;" oninput="searchBooks()">
+        <img id="search" class="search-icon" src="../assets/icon/search.svg" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);width:20px;height:20px;pointer-events:none;">
+        <input type="text" placeholder="Search books…"oninput="searchBooks()">
       </div>
       <img id="settings-icon" src="../assets/icon/settings.svg" alt="Settings" style="width:36px;height:36px;cursor:pointer;" onclick="document.getElementById('settings-dialog').showModal()">
     </div>
@@ -74,25 +94,25 @@
 
   <div id="book-list" style="flex:1;display:flex;flex-wrap:wrap;gap:20px;padding:20px;overflow:auto;"></div>
 
-  <dialog id="settings-dialog" style="position:relative;width:460px;max-width:90vw;padding:0;border:none;border-radius:12px;background:#f1efe3;box-shadow:0 2px 10px rgba(0,0,0,0.2);font-family:'Roboto Slab',serif;overflow:hidden;max-height:80vh;">
-    <button style="position:absolute;top:12px;right:12px;background:none;border:none;font-size:1.5rem;cursor:pointer;padding:0;outline:none;"
+  <dialog id="settings-dialog" class="dialog">
+    <button class="close"
       onclick="document.getElementById('settings-dialog').close()">
       ×
     </button>
 
     <!-- Scrollable area. -->
     <div id="settings-scroll-area" style="overflow-y:auto;max-height:calc(80vh - 56px);padding:28px;">
-      <h2 style="font-size:1.75rem;margin:0 0 24px 0;color:#333;">Settings</h2>
+      <h2 class="dialog-title">Settings</h2>
 
       <h3 style="font-size:1rem;margin-bottom:24px;">Preference</h3>
       <!-- Dark theme. -->
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:32px;">
         <div style="display:flex;align-items:center;gap:8px;">
-          <img src="../assets/icon/dark_mode.svg" style="width:24px;height:24px;">
-          <span style="font-size:1rem;color:#333;">Enable dark theme</span>
+          <img id="theme" src="../assets/icon/dark_mode.svg" style="width:24px;height:24px;">
+          <span id="label-theme" style="font-size:1rem;color:#333;">Enable dark theme</span>
         </div>
         <label class="switch">
-          <input type="checkbox" onchange="document.body.classList.toggle('dark')">
+          <input type="checkbox" onchange="const isDark = this.checked;document.body.classList.toggle('dark', isDark);localStorage.setItem('darkMode', isDark);">
           <span class="slider"></span>
         </label>
       </div>
@@ -100,15 +120,15 @@
       <div style="margin-bottom:32px;">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
           <div style="display:flex;align-items:center;gap:8px;">
-            <img src="../assets/icon/format_size.svg" style="width:24px;height:24px;">
+            <img id="fontSize" src="../assets/icon/format_size.svg" style="width:24px;height:24px;">
             <span style="font-size:1rem;">Font size</span>
           </div>
           <span id="font-size-value" style="font-size:1rem;">16px</span>
         </div>
         <input type="range" min="12" max="24" step="2" value="16"
-          oninput="document.getElementById('font-size-value').innerText=this.value+'px'"
+          oninput="document.getElementById('font-size-value').innerText=this.value+'px';document.documentElement.style.setProperty('--user-font-size', this.value + 'px');localStorage.setItem('fontSize', this.value);"
           style="width:calc(100% - 32px);margin-left:32px;height:4px;border-radius:2px;background:#e0ddd0;-webkit-appearance:none;margin-bottom:4px;">
-        <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:#555;width:calc(100% - 32px);margin-left:32px;">
+        <div class="font-size">
           <span>12</span><span>18</span><span>24</span>
         </div>
       </div>
@@ -116,15 +136,15 @@
       <div style="margin-bottom:32px;">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
           <div style="display:flex;align-items:center;gap:8px;">
-            <img src="../assets/icon/format_line_spacing.svg" style="width:24px;height:24px;">
+            <img id="lineSpacing" src="../assets/icon/format_line_spacing.svg" style="width:24px;height:24px;">
             <span style="font-size:1rem;">Line spacing</span>
           </div>
           <span id="line-spacing-value" style="font-size:1rem;">1.5</span>
         </div>
         <input type="range" min="1" max="2" step="0.1" value="1.5"
-          oninput="document.getElementById('line-spacing-value').innerText=this.value"
+          oninput="document.getElementById('line-spacing-value').innerText=this.value;document.documentElement.style.setProperty('--user-line-spacing', this.value);localStorage.setItem('lineSpacing', this.value);"
           style="width:calc(100% - 32px);margin-left:32px;height:4px;border-radius:2px;background:#e0ddd0;-webkit-appearance:none;margin-bottom:4px;">
-        <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:#555;width:calc(100% - 32px);margin-left:32px;">
+        <div class="line-spacing">
           <span>1</span><span>1.5</span><span>2</span>
         </div>
       </div>
@@ -132,12 +152,12 @@
       <!-- Account. -->
       <h3 style="font-size:1rem;margin-bottom:16px;">Account</h3>
       <div style="display:flex;align-items:flex-start;gap:12px;">
-        <img src="../assets/icon/account.svg" style="width:54px;height:54px;margin-top:4px;">
+        <img id="account" src="../assets/icon/account.svg" style="width:54px;height:54px;margin-top:4px;">
         <div style="display:flex;flex-direction:column;gap:8px;">
           <span style="font-size:1rem;" id="username">username</span>
           <form action="logout.php" method="post">
             <button id="logout-btn"
-              style="padding:8px 16px;border:none;border-radius:8px;cursor:pointer;background:#333;color:#fff;text-align:center;">
+              style="padding:8px 16px;border:none;border-radius:8px;cursor:pointer;background:#5409DA;color:#fff;text-align:center;">
               Logout
             </button>
           </form>
@@ -147,6 +167,7 @@
   </dialog>
 
   <!-- Scripts -->
+   <script src="theme.js" defer></script>
   <script>
     // Navigation.
     document.querySelectorAll('.nav-item').forEach(el => {
@@ -260,30 +281,45 @@
       });
 
     document.querySelectorAll('.filter-btn').forEach(btn => {
-      btn.addEventListener('click', e => {
-        e.stopPropagation();
-        const menu = btn.nextElementSibling;
-        const icon = btn.querySelector('img');
-        const isOpen = menu.style.display === 'block';
-        // Close all menus first.
-        document.querySelectorAll('.filter-menu').forEach(m => m.style.display = 'none');
-        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-        document.querySelectorAll('.filter-btn img').forEach(i => i.src = '../assets/icon/arrow_drop_down.svg');
-        if (!isOpen) {
-          menu.style.display = 'block';
-          btn.classList.add('active');
-          icon.src = '../assets/icon/arrow_drop_up.svg';
-        }
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const menu = btn.nextElementSibling;
+      const icon = btn.querySelector('img');
+      const isOpen = menu.style.display === 'block';
+      const isDark = document.body.classList.contains('dark');
+
+      // Tutup semua menu dan reset ikon
+      document.querySelectorAll('.filter-menu').forEach(m => m.style.display = 'none');
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.filter-btn img').forEach(i => {
+        i.src = isDark
+          ? '../assets/icon/arrow_drop_down_white.svg'
+          : '../assets/icon/arrow_drop_down.svg';
       });
-    });
-    document.addEventListener('click', e => {
-      if (!e.target.closest('.filter-btn') && !e.target.closest('.filter-menu')) {
-        document.querySelectorAll('.filter-menu').forEach(m => m.style.display = 'none');
-        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-        document.querySelectorAll('.filter-btn img').forEach(i => i.src = '../assets/icon/arrow_drop_down.svg');
+
+      // Tampilkan menu jika belum terbuka
+      if (!isOpen) {
+        menu.style.display = 'block';
+        btn.classList.add('active');
+        icon.src = isDark
+          ? '../assets/icon/arrow_drop_up_white.svg'
+          : '../assets/icon/arrow_drop_up.svg';
       }
     });
+  });
 
+  document.addEventListener('click', e => {
+    if (!e.target.closest('.filter-btn') && !e.target.closest('.filter-menu')) {
+      const isDark = document.body.classList.contains('dark');
+      document.querySelectorAll('.filter-menu').forEach(m => m.style.display = 'none');
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.filter-btn img').forEach(i => {
+        i.src = isDark
+          ? '../assets/icon/arrow_drop_down_white.svg'
+          : '../assets/icon/arrow_drop_down.svg';
+      });
+    }
+  });
     function getSearchKeywordFromURL() {
       const params = new URLSearchParams(window.location.search);
       return params.get('search') || '';
