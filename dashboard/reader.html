@@ -16,23 +16,14 @@
   <style>
     * {box-sizing:border-box;margin:0;padding:0;}
     html, body {height:100%;overflow:hidden;font-family:'Roboto Slab', serif;background:#f1efe3;}
-    body.dark{background: #8a8a8a; color: white;}
+    body.dark{filter: invert(100%);}
     body {display:flex;}
     #toc li {padding:10px 14px;cursor:pointer;background:#f1efe3;margin:0 8px;border-radius:8px;}
     #toc li:hover {background:#e0ddd0;}
     #toc li.active {background:#d4c7b0;font-weight:bold;}
-    body.dark #toc {background-color: #0e101c;}
-    body.dark #toc div {background-color: #0e101c !important;}
-    body.dark #toc li {background-color: #333337; color: white;}
-    body.dark #toc li:hover {background-color: #2b384f;}
-    body.dark #toc li.active {background-color: #2b384f;font-weight: bold;}
-    body.dark #header {background-color: #1c1c1c;color: white;}
     #book-author{font-size:0.8rem;color:#555;}
-    body.dark #book-author {color: white;}
     .header{height:40px;background:#f1efe3;border-bottom:1px solid #ddd;display:flex;align-items:center;justify-content:space-between;padding:0 16px;font-size: var(--user-font-size, 16px);color:#333;}
-    body.dark .header{background: black; color: white;}
     .back-btn{width:32px;height:32px;border-radius:50%;background:#d4c7b0;border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0;margin:0;}
-    body.dark .back-btn{background: #a0a0a0;}
 
     ::-webkit-scrollbar { width:8px; background-color:rgba(0,0,0,0); }
     ::-webkit-scrollbar:hover { background-color:rgba(0,0,0,0.09); }
