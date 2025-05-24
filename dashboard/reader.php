@@ -35,7 +35,19 @@ if (isset($_GET['update_progress'])) {
 // Fetch metadata and EPUB URL.
 if (isset($_GET['id'])) {
   $id = (int)$_GET['id'];
-  $stmt = $conn->prepare("SELECT title, writer, file_path FROM books WHERE id = ?");
+  $stmt = $conn->prepare("
+    SELECT 
+        b.title, 
+        b.writer, 
+        b.file_path,
+        GROUP_CONCAT(c.category_name SEPARATOR ', ') AS categories
+    FROM books b
+    LEFT JOIN book_category bc ON b.id = bc.book_id
+    LEFT JOIN category c ON bc.category_id = c.id
+    WHERE b.id = ?
+    GROUP BY b.id
+");
+
   $stmt->bind_param('i', $id);
   $stmt->execute();
   $stmt->store_result();
@@ -44,7 +56,7 @@ if (isset($_GET['id'])) {
     exit('Book not found');
   }
 
-  $stmt->bind_result($title, $writer, $file_path);
+  $stmt->bind_result($title, $writer, $file_path, $categories);
   $stmt->fetch();
   $stmt->close();
 
@@ -69,6 +81,7 @@ if (isset($_GET['id'])) {
     'id' => $id,
     'title' => $title,
     'writer' => $writer,
+    'category' => $categories ?? 'no category',
     'file_path' => $file_path,
     'last_cfi' => $last_cfi,
     'location_current' => $current_loc,
