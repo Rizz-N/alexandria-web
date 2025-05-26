@@ -8,7 +8,7 @@
   <style>
     body {margin:0;padding:0;font-family:'Roboto Slab',serif;background:#f1efe3;display:flex;flex-direction:column;height:100vh;overflow:hidden;}
     body.dark{background: #0e101c; color: white;}
-    .nav-item {cursor:pointer;color:#333;padding:8px 12px;position:relative;}
+    .nav-item {cursor:pointer;color:#333;padding:8px 12px;position:relative;font-size: var(--user-font-size, 16px);}
     body.dark .nav-item{color: white;}
     .nav-item:hover, .nav-item.selected {border-bottom:2px solid #333;}
     body.dark .nav-item:hover,body.dark .nav-item.selected {border-bottom:2px solid white;}
@@ -31,7 +31,7 @@
     body.dark .local-search{color: white;}
     .search-bar img {width:18px;height:18px;}
     .search-bar input {border:none;padding-bottom:8px;background:none;outline:none;font-size:0.9rem;flex:1;border-bottom:1px solid #ccc;}
-    .clear-history {cursor:pointer;color:#000;font-size:0.9rem;padding:8px 12px;display:inline-block;position:relative;}
+    .clear-history {cursor:pointer;color:#000;font-size: var(--user-font-size, 16px);padding:8px 12px;display:inline-block;position:relative;}
     body.dark .clear-history{color: white;}
     .clear-history::after {content:'';position:absolute;left:0;bottom:0;width:0;height:2px;background:#000;}
     body.dark .clear-history::after{background: white;}
@@ -70,7 +70,7 @@
     /* Slider. */
     input[type="range"]::-webkit-slider-thumb {-webkit-appearance:none;height:16px;width:16px;border-radius:50%;background:#666;cursor:pointer;}
     input[type="range"]::-moz-range-thumb {height:16px;width:16px;border-radius:50%;background:#d4c7b0;cursor:pointer;}
-    .site-title{margin:0;font-size:1.8rem;color:#333;}
+    .site-title{margin:0;color:#333;font-size: 2 rem;}
     body.dark .site-title{color: white;}
     .clear-dialog{position:relative;background:#f1efe3;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,0.2);max-width:420px;width:100%;font-family:'Roboto Slab',serif;color:#333;box-sizing:border-box;}
     body.dark .clear-dialog{ background: #303030; box-shadow:0 2px 10px rgba(225, 225, 225, 0.5); color: white; }
