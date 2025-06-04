@@ -36,8 +36,8 @@
     .clear-history::after {content:'';position:absolute;left:0;bottom:0;width:0;height:2px;background:#000;}
     body.dark .clear-history::after{background: white;}
     .clear-history:hover::after {width:100%;}
-    #cancel-clear-btn:hover {background:#ccc !important;}
-    #confirm-clear-btn:hover {background:#4E71FF !important;}
+    #cancel-clear-btn:hover {background:#c2c1bc !important;}
+    #confirm-clear-btn:hover {background:#555 !important;}
     .global-search{color: #0e101c; border:4px solid #ccc;border-radius:20px;background:transparent;outline:none;padding:10px 12px 10px 40px;font-size:1rem;min-width:220px;height:16px;}
     body.dark .global-search{color: white; border: 4px solid white;}
     .date{font-size:1rem;font-weight:bold;margin:24px 0 12px 24px;color:#555;}
@@ -62,7 +62,7 @@
     #settings-scroll-area::-webkit-scrollbar {display:none;}
     .switch {position:relative;display:inline-block;width:40px;height:20px;}
     .switch input {opacity:0;width:0;height:0;}
-    .switch .slider {position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;border-radius:20px;background:#e0ddd0;transition:.2s;}
+    .switch .slider {position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;border-radius:20px;background:#dbd7c1;transition:.2s;}
     .switch .slider:before {content:"";position:absolute;height:16px;width:16px;left:2px;bottom:2px;border-radius:50%;background:#999;transition:.2s;}
     .switch input:checked + .slider {background:#d4c7b0;}
     .switch input:checked + .slider:before {transform:translateX(20px);background:#666;}
@@ -94,8 +94,9 @@
         <input id="global-search-input" type="text" placeholder="Search books…"
           class="global-search"
           oninput="searchBooks()" onkeydown="handleGlobalSearch(event)">
+        <img src="../assets/icon/mic.svg" title="Voice-to-Text" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);width:20px;height:20px;cursor:pointer;">
       </div>
-      <img id="settings-icon" src="../assets/icon/settings.svg" alt="Settings" style="width:36px;height:36px;cursor:pointer;" onclick="document.getElementById('settings-dialog').showModal()">
+      <img id="settings-icon" src="../assets/icon/settings.svg" title="Settings" style="width:36px;height:36px;cursor:pointer;" onclick="document.getElementById('settings-dialog').showModal()">
     </div>
   </div>
 
@@ -119,7 +120,7 @@
         </p>
       </div>
       <div style="position:absolute;bottom:12px;right:12px;display:flex;gap:8px;">
-        <button id="cancel-clear-btn" style="background:#ddd;color:#333;border:none;padding:8px 12px;border-radius:8px;cursor:pointer;font-size:0.85rem;font-weight:400;">
+        <button id="cancel-clear-btn" style="background:#cfccc4;color:#333;border:none;padding:8px 12px;border-radius:8px;cursor:pointer;font-size:0.85rem;font-weight:400;">
           Cancel
         </button>
         <button id="confirm-clear-btn" style="background:#5409DA;color:#fff;border:none;padding:8px 12px;border-radius:8px;cursor:pointer;font-size:0.85rem;font-weight:400;">
@@ -130,7 +131,7 @@
   </div>
 
   <dialog id="settings-dialog" class="dialog">
-    <button class="close"
+    <button class="close" title="close"
       onclick="document.getElementById('settings-dialog').close()">
       ×
     </button>
